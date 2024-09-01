@@ -1,5 +1,4 @@
 import streamlit as st
-from dotenv import load_dotenv
 import os
 from langchain_community.document_loaders import PDFPlumberLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -11,14 +10,9 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 
-# 외부 라이브러리와 모듈을 불러옵니다.
-# Streamlit: 웹 애플리케이션 인터페이스를 만들기 위해 사용합니다.
-# dotenv: .env 파일에서 환경 변수를 로드하기 위해 사용합니다.
-# os: 파일 경로 작업을 위해 사용합니다.
-# langchain 및 관련 모듈: 문서 로드, 텍스트 분할, 임베딩 생성, 검색기 구성 등을 위한 라이브러리입니다.
-
 # 환경 변수 로드
-load_dotenv()
+os.environ["OPENAI_API_KEY"] = st.secrets["general"]["openai_api_key"]
+os.environ["UPSTAGE_API_KEY"] = st.secrets["general"]["upstage_api_key"]
 
 # 프로젝트 로깅 설정
 from langchain_teddynote import logging
@@ -44,7 +38,7 @@ pdf_files = [
 ]
 
 # 텍스트 분할기를 설정합니다. 긴 텍스트를 작은 청크로 나누는 역할을 합니다.
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=30)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1200, chunk_overlap=30)
 
 # 임베딩 모델을 설정합니다. 텍스트를 벡터로 변환하는 데 사용됩니다.
 embeddings = UpstageEmbeddings(model="solar-embedding-1-large-passage")
@@ -130,7 +124,6 @@ def create_chain():
         #Answer:"""
     )
 
-    # llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0)
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
     chain = (
