@@ -44,7 +44,7 @@ pdf_files = [
 ]
 
 # 텍스트 분할기를 설정합니다. 긴 텍스트를 작은 청크로 나누는 역할을 합니다.
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1200, chunk_overlap=200)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=30)
 
 # 임베딩 모델을 설정합니다. 텍스트를 벡터로 변환하는 데 사용됩니다.
 embeddings = UpstageEmbeddings(model="solar-embedding-1-large-passage")
